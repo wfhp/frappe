@@ -529,9 +529,9 @@ frappe.ui.Sidebar = class Sidebar {
 
 		return new frappe.ui.sidebar_item[class_name](opts);
 	}
-	update_item(item, index) {}
+	update_item(item, index) { }
 
-	remove_item(item, index) {}
+	remove_item(item, index) { }
 
 	toggle_width() {
 		if (!this.sidebar_expanded) {
@@ -657,10 +657,17 @@ frappe.ui.Sidebar = class Sidebar {
 				if (sidebars.includes(this.get_workspace_for_module(module))) {
 					frappe.app.sidebar.setup(sidebar);
 				} else {
-					frappe.app.sidebar.setup(module);
+					// Fallback: use the first matching sidebar
+					frappe.app.sidebar.setup(sidebars[0]);
 				}
 			} else if (module) {
 				this.show_sidebar_for_module(module);
+			} else {
+				// Last resort: try to find sidebar via the doctype's module
+				let meta_module = router?.meta?.module;
+				if (meta_module) {
+					this.show_sidebar_for_module(meta_module);
+				}
 			}
 		} catch (e) {
 			console.log(e);
