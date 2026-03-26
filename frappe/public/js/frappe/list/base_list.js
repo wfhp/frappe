@@ -1132,6 +1132,7 @@ class FilterArea {
 				fieldtype: "Data",
 				label: "ID",
 				condition: "like",
+				match_type: "like",
 				fieldname: "name",
 				onchange: () => this.debounced_refresh_list_view(),
 			};
